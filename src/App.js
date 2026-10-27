@@ -11,19 +11,33 @@ function Counter() {
   const [count, setCount] = useState(0);
   const [step, setStep] = useState(1);
 
+  function handleReset() {
+    setCount(0);
+    setStep(1);
+  }
+
   const date = new Date("October 27 2026");
   date.setDate(date.getDate() + count);
   return (
     <div>
       <div className="flex-container">
-        <button onClick={() => setStep((s) => s - 1)}>-</button>
+        <input
+          type="range"
+          min={0}
+          max={10}
+          value={step}
+          onChange={(e) => setStep(Number(e.target.value))}
+        />
         <span>Steps: {step} </span>
-        <button onClick={() => setStep((s) => s + 1)}>+</button>
       </div>
 
       <div className="flex-container">
         <button onClick={() => setCount((c) => c - step)}>-</button>
-        <p>Count: {count} </p>
+        <input
+          type="text"
+          value={count}
+          onChange={(e) => setCount(Number(e.target.value))}
+        />
         <button onClick={() => setCount((c) => c + step)}>+</button>
       </div>
       <p>
@@ -36,11 +50,11 @@ function Counter() {
         </span>
         <span>{date.toDateString()}</span>
       </p>
-      <div>
-        {/* <p>30 days from today is DATE</p>
-        <p>Today is DATE</p>
-        <p>30 days ago was DATE</p> */}
-      </div>
+      {count !== 0 || step !== 1 ? (
+        <div>
+          <button onClick={handleReset}>Reset</button>
+        </div>
+      ) : null}
     </div>
   );
 }
